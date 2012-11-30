@@ -3,8 +3,10 @@
 @Email: kevrodrigues116@gmail.com
 ================================*/
 
-// window, doc, undefined is undefined no need to reference at the (jquery) bottom
-// creates a local scope within my plugin
+// window & document allows local access to these elemnts.
+// undefined is undefined no need to reference at the bottom of
+// (jquery) this creates a local scope within the plugin as the first
+// line suggests.
 
 ;(function($, window, document, undefined){
     $.jQuerySlider = function(el, options){
@@ -31,7 +33,7 @@
         
         // Sample Function, Uncomment to use
         // base.functionName = function(paramaters){
-        // 
+        //
         // };
         
         // Run initializer
@@ -46,10 +48,7 @@
         return this.each(function(){
             (new $.jQuerySlider(this, radius, options));
 
-		   // HAVE YOUR PLUGIN DO STUFF HERE
-			//hdjhsdhsjhd
-	
-		   // END DOING STUFF
+            // Begin plugin code
 
         });
     };
