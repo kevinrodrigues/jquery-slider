@@ -47,7 +47,7 @@
             (new $.jQuerySlider(this, radius, options));
 
 		   // HAVE YOUR PLUGIN DO STUFF HERE
-			
+			//hdjhsdhsjhd
 	
 		   // END DOING STUFF
 
