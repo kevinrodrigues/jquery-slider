@@ -11,7 +11,7 @@ E:kevrodrigues116@gmail.com
  
             var defaults = {
                 speed: 600,
-                pause: true
+                pause_control: true
             };
              
             var options = $.extend(defaults, options);
