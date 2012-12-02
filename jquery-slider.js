@@ -1,56 +1,35 @@
-/*===============================
-@Author: Kevin Rosario Rodrigues
-@Email: kevrodrigues116@gmail.com
-================================*/
-
-// window & document allows local access to these elemnts.
-// undefined is undefined no need to reference at the bottom of
-// (jquery) this creates a local scope within the plugin as the first
-// line suggests.
-
-;(function($, window, document, undefined){
-    $.jQuerySlider = function(el, options){
-        // To avoid scope issues, use 'base' instead of 'this'
-        // to reference this class from internal events and functions.
-        var base = this;
-        
-        // Access to jQuery and DOM versions of element
-        base.$el = $(el);
-        base.el = el;
-        
-        // Add a reverse reference to the DOM object
-        base.$el.data("jQuerySlider", base);
-        
-        base.init = function(){
-            if( typeof( radius ) === "undefined" || radius === null ) radius = "20px";
-            
-            base.radius = radius;
-            
-            base.options = $.extend({},$.jQuerySlider.defaultOptions, options);
-            
-            // Put your initialization code here
-        };
-        
-        // Sample Function, Uncomment to use
-        // base.functionName = function(paramaters){
-        //
-        // };
-        
-        // Run initializer
-        base.init();
-    };
-    
-    $.jQuerySlider.defaultOptions = {
-        radius: "20px"
-    };
-    
-    $.fn.jQuerySlider = function(radius, options){
-        return this.each(function(){
-            (new $.jQuerySlider(this, radius, options));
-
-            // Begin plugin code
-
-        });
-    };
-    
-})(jQuery, window, document);
+/*=====================
+*======================*/
+(function($){
+    $.fn.extend({
+        //plugin name - jquerySlider();
+        jquerySlider: function(options) {
+ 
+            var defaults = {
+                animatePadding: 60,
+                defaultPadding: 10,
+                evenColor: '#ccc',
+                oddColor: '#eee',
+            };
+             
+            var options = $.extend(defaults, options);
+         
+            return this.each(function() {
+                  var o =options;
+                  var obj = $(this);               
+                  var items = $("li", obj);
+                   
+                  $("li:even", obj).css('background-color', o.evenColor);              
+                  $("li:odd", obj).css('background-color', o.oddColor);                  
+                   
+                  items.mouseover(function() {
+                      $(this).animate({paddingLeft: o.animatePadding}, 300);
+                     
+                  }).mouseout(function() {
+                      $(this).animate({paddingLeft: o.defaultPadding}, 300);
+                     
+                  });
+            });
+        }
+    });
+})(jQuery);
