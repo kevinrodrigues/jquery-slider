@@ -1,17 +1,18 @@
 /*==============================
 Author: Kevin Rosario Rodrigues
---------------------------------
-E:kevrodrigues116@gmail.com
 *==============================*/
 
 (function($, window, document, undefined){
     $.fn.extend({
         //plugin name - jquerySlider();
         jquerySlider: function(options) {
- 
+            
+            // overwrite defaults in your .js file
             var defaults = {
-                speed: 600,
-                pause_control: true
+                speed: 600,             // set your speed in m-seconds
+                pause_control: false,   // set to true to stop auto play
+                pause_show : true,      // set to false to hide pause/play button
+                indicator : true        // set to false to hide indicators
             };
              
             var options = $.extend(defaults, options);
@@ -24,19 +25,36 @@ E:kevrodrigues116@gmail.com
                 //alert('working')
 
                 // checks to see if element exists
-                if(!$('#slider').length) {
+                if (!$('#slider').length) {
                     // if not exit
                     return;
                 }
 
 
+                // option to have pause control on set to false in default
+                // settings to overwrite if you want it off.
+                if (o.pause_show === true || o.pause_show.length >= 0) {
+                
+                   $('#slider_pause').show();
+                } else {
+                   $('#slider_pause').hide();
+                }
+
+                // option to have indicators off.
+                if (o.indicator === true || o.indicator.length >= 0) {
+                
+                   $('#slider_controls').show();
+                } else {
+                   $('#slider_controls').hide();
+                }
+                   
 
 
-                // begin rotation
-                function rotate(element) {
+                // begin fade
+                function changeSlide(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if(pause) {
+                    if(o.pause_control) {
                         return;
                     }
 
@@ -60,7 +78,7 @@ E:kevrodrigues116@gmail.com
 
                     // continue rotation after above code excutes
                     function next(){
-                        rotate($next_li);
+                        changeSlide($next_li);
                     }
 
                     $(element).fadeOut(o.speed);
@@ -83,10 +101,10 @@ E:kevrodrigues116@gmail.com
                     $($(this).attr('href')).show().siblings('li').hide();
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
-                    pause = true;
+                    o.pause_control = true;
 
                     // no follow
-                    this.blur();
+
                     return false;
 
                 });
@@ -99,22 +117,21 @@ E:kevrodrigues116@gmail.com
                     // checking button status
                     if($(this).html() === 'Pause') {
 
-                        pause = true;
+                        o.pause_control = true;
 
                         $(this).html('Play');
 
                     } else {
 
-                        pause = false;
+                        o.pause_control = false;
 
-                        // start rotation 
-                        rotate('#slider li:visible:first');
+                    // start rotation 
+                        changeSlide('#slider li:visible:first');
 
                         $(this).html('Pause');
 
                     }
 
-                    this.blur();
                     return false;
 
                 });
@@ -123,7 +140,7 @@ E:kevrodrigues116@gmail.com
                 $('#slider li:first').siblings('li').hide();
 
                 $(window).load(function(){
-                    rotate($('#slider li:visible:first'));
+                    changeSlide($('#slider li:visible:first'));
                 });
 
 

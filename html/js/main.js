@@ -1,5 +1,6 @@
 $(function(){
 	$('#slider').jquerySlider({
-		speed : 1000
+		speed : 3500,
+
 	});
 });

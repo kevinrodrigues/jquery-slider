@@ -1,7 +1,5 @@
 /*==============================
 Author: Kevin Rosario Rodrigues
---------------------------------
-E:kevrodrigues116@gmail.com
 *==============================*/
 
 (function($, window, document, undefined){
@@ -11,7 +9,8 @@ E:kevrodrigues116@gmail.com
  
             var defaults = {
                 speed: 600,
-                pause: true
+                pause_control: false,
+                pause_show : true
             };
              
             var options = $.extend(defaults, options);
@@ -30,13 +29,25 @@ E:kevrodrigues116@gmail.com
                 }
 
 
+                // option to have pause control on set to false in default
+                // settings if you want it off.
+                if(o.pause_show === true) {
+                
+                   $('#slider_pause').show();
+                } else {
+                   $('#slider_pause').hide();
+                }
+                   
+                     
+                                  
+
 
 
                 // begin rotation
                 function rotate(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if(pause) {
+                    if(o.pause_control) {
                         return;
                     }
 
@@ -83,7 +94,7 @@ E:kevrodrigues116@gmail.com
                     $($(this).attr('href')).show().siblings('li').hide();
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
-                    pause = true;
+                    o.pause_control = true;
 
                     // no follow
                     this.blur();
@@ -99,13 +110,13 @@ E:kevrodrigues116@gmail.com
                     // checking button status
                     if($(this).html() === 'Pause') {
 
-                        pause = true;
+                        o.pause_control = true;
 
                         $(this).html('Play');
 
                     } else {
 
-                        pause = false;
+                        o.pause_control = false;
 
                         // start rotation 
                         rotate('#slider li:visible:first');
