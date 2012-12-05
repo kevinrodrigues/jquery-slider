@@ -6,48 +6,55 @@ Author: Kevin Rosario Rodrigues
     $.fn.extend({
         //plugin name - jquerySlider();
         jquerySlider: function(options) {
- 
+            
+            // overwrite defaults in your .js file
             var defaults = {
-                speed: 600,
-                pause_control: false,
-                pause_show : true
+                speed: 600,             // set your speed in m-seconds
+                pause_control: false,   // set to true to stop auto play
+                pause_show : true,      // set to false to hide pause/play button
+                indicator : true        // set to false to hide indicators
             };
              
-            var options = $.extend(defaults, options);
+            options = $.extend(defaults, options);
          
             return this.each(function() {
 
-                var o =options;
+                
                 // begin plugin code
 
                 //alert('working')
 
                 // checks to see if element exists
-                if(!$('#slider').length) {
+                if (!$('#slider').length) {
                     // if not exit
                     return;
                 }
 
 
                 // option to have pause control on set to false in default
-                // settings if you want it off.
-                if(o.pause_show === true) {
+                // settings to overwrite if you want it off.
+                if (options.pause_show === true) {
                 
                    $('#slider_pause').show();
                 } else {
                    $('#slider_pause').hide();
                 }
+
+                // option to have indicators off.
+                if (options.indicator === true) {
+                
+                   $('#slider_controls').show();
+                } else {
+                   $('#slider_controls').hide();
+                }
                    
-                     
-                                  
 
 
-
-                // begin rotation
-                function rotate(element) {
+                // begin fade
+                function changeSlide(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if(o.pause_control) {
+                    if(options.pause_control) {
                         return;
                     }
 
@@ -71,15 +78,15 @@ Author: Kevin Rosario Rodrigues
 
                     // continue rotation after above code excutes
                     function next(){
-                        rotate($next_li);
+                        changeSlide($next_li);
                     }
 
-                    $(element).fadeOut(o.speed);
+                    $(element).fadeOut(options.speed);
 
-                    $($next_li).fadeIn(o.speed, function(){
+                    $($next_li).fadeIn(options.speed, function(){
 
                         //creates a delay
-                        setTimeout(next, o.speed);
+                        setTimeout(next, options.speed);
                     });
                 }
 
@@ -94,10 +101,10 @@ Author: Kevin Rosario Rodrigues
                     $($(this).attr('href')).show().siblings('li').hide();
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
-                    o.pause_control = true;
+                    options.pause_control = true;
 
                     // no follow
-                    this.blur();
+
                     return false;
 
                 });
@@ -110,22 +117,21 @@ Author: Kevin Rosario Rodrigues
                     // checking button status
                     if($(this).html() === 'Pause') {
 
-                        o.pause_control = true;
+                        options.pause_control = true;
 
                         $(this).html('Play');
 
                     } else {
 
-                        o.pause_control = false;
+                        options.pause_control = false;
 
-                        // start rotation 
-                        rotate('#slider li:visible:first');
+                    // start rotation 
+                        changeSlide('#slider li:visible:first');
 
                         $(this).html('Pause');
 
                     }
 
-                    this.blur();
                     return false;
 
                 });
@@ -134,7 +140,7 @@ Author: Kevin Rosario Rodrigues
                 $('#slider li:first').siblings('li').hide();
 
                 $(window).load(function(){
-                    rotate($('#slider li:visible:first'));
+                    changeSlide($('#slider li:visible:first'));
                 });
 
 
