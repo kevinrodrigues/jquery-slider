@@ -15,11 +15,11 @@ Author: Kevin Rosario Rodrigues
                 indicator : true        // set to false to hide indicators
             };
              
-            var options = $.extend(defaults, options);
+            options = $.extend(defaults, options);
          
             return this.each(function() {
 
-                var o =options;
+                
                 // begin plugin code
 
                 //alert('working')
@@ -33,7 +33,7 @@ Author: Kevin Rosario Rodrigues
 
                 // option to have pause control on set to false in default
                 // settings to overwrite if you want it off.
-                if (o.pause_show === true || o.pause_show.length >= 0) {
+                if (options.pause_show === true) {
                 
                    $('#slider_pause').show();
                 } else {
@@ -41,7 +41,7 @@ Author: Kevin Rosario Rodrigues
                 }
 
                 // option to have indicators off.
-                if (o.indicator === true || o.indicator.length >= 0) {
+                if (options.indicator === true) {
                 
                    $('#slider_controls').show();
                 } else {
@@ -54,7 +54,7 @@ Author: Kevin Rosario Rodrigues
                 function changeSlide(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if(o.pause_control) {
+                    if(options.pause_control) {
                         return;
                     }
 
@@ -81,12 +81,12 @@ Author: Kevin Rosario Rodrigues
                         changeSlide($next_li);
                     }
 
-                    $(element).fadeOut(o.speed);
+                    $(element).fadeOut(options.speed);
 
-                    $($next_li).fadeIn(o.speed, function(){
+                    $($next_li).fadeIn(options.speed, function(){
 
                         //creates a delay
-                        setTimeout(next, o.speed);
+                        setTimeout(next, options.speed);
                     });
                 }
 
@@ -101,7 +101,7 @@ Author: Kevin Rosario Rodrigues
                     $($(this).attr('href')).show().siblings('li').hide();
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
-                    o.pause_control = true;
+                    options.pause_control = true;
 
                     // no follow
 
@@ -117,13 +117,13 @@ Author: Kevin Rosario Rodrigues
                     // checking button status
                     if($(this).html() === 'Pause') {
 
-                        o.pause_control = true;
+                        options.pause_control = true;
 
                         $(this).html('Play');
 
                     } else {
 
-                        o.pause_control = false;
+                        options.pause_control = false;
 
                     // start rotation 
                         changeSlide('#slider li:visible:first');
