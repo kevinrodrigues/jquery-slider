@@ -125,7 +125,7 @@ Author: Kevin Rosario Rodrigues
 
                         options.pause_control = false;
 
-                    // start rotation 
+                    // start rotation
                         changeSlide('#slider li:visible:first');
 
                         $(this).html('Pause');

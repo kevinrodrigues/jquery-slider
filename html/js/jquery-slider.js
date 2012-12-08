@@ -1,6 +1,7 @@
-/*==============================
+/*==========================================
 Author: Kevin Rosario Rodrigues
-*==============================*/
+Requires: jQuery v1.3.2 or later
+*==========================================*/
 
 (function($, window, document, undefined){
     $.fn.extend({
@@ -9,14 +10,14 @@ Author: Kevin Rosario Rodrigues
             
             // overwrite defaults in your .js file
             var defaults = {
-                speed: 600,             // set your speed in m-seconds
-                pause_control: false,   // set to true to stop auto play
-                pause_show : true,      // set to false to hide pause/play button
-                indicator : true        // set to false to hide indicators
+                speed: 1200,             // set your speed in m-seconds
+                pause_control: false,    // set to true to stop auto play
+                pause_show : true,       // set to false to hide pause/play button
+                indicator : true         // set to false to hide indicators
             };
              
             options = $.extend(defaults, options);
-         
+            
             return this.each(function() {
 
                 
@@ -97,8 +98,11 @@ Author: Kevin Rosario Rodrigues
 
                 $('#slider_controls a').click(function(){
 
-                    $('#slider_pause').html('Play');
-                    $($(this).attr('href')).show().siblings('li').hide();
+                    // find target a tag and show / fade out remaining with user set speed / default speed
+                    $($(this).attr('href')).show(options.speed).siblings('li').fadeOut(options.speed).end().end().fadeIn(options.speed, function(){
+                        
+                    });
+
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
                     options.pause_control = true;
@@ -125,7 +129,7 @@ Author: Kevin Rosario Rodrigues
 
                         options.pause_control = false;
 
-                    // start rotation 
+                    // start rotation
                         changeSlide('#slider li:visible:first');
 
                         $(this).html('Pause');
@@ -135,6 +139,15 @@ Author: Kevin Rosario Rodrigues
                     return false;
 
                 });
+
+                // non auto play setting
+                if (options.pause_control === true) {
+                    $('#slider_pause').html('Play');
+                } else {
+                    $('#slider_pause').html('Pause');
+                }
+
+
 
                 // hides all li elements apart from the first one.
                 $('#slider li:first').siblings('li').hide();

@@ -90,8 +90,27 @@ textarea {
 }
 
 /* ==========================================================================
-   Author's custom styles
+   Author's custom styles demo css
    ========================================================================== */
+body {
+    background: #ccc;
+}
+.wrapper-inner {
+    margin: 0 auto;
+    width: 952px;
+}
+
+h1 {
+    margin: 10px 0;
+    padding: 0;
+    color: #333;
+    font-weight: 100;
+    text-align: center;
+}
+
+h1 span {
+    font-size: .6em;
+}
 
 ul {
     margin: 0;
@@ -102,12 +121,24 @@ ul {
     width: 952px;
     height: 368px;
     overflow: hidden;
+    clear: both;
+    position: relative;
 }
 
 #slider li img {
     position: absolute;
     left: 0;
     top: 0;
+    width: 952px;
+    height: 368px;
+    border-radius: 5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+
+#slider_controls {
+    margin: 10px 0;
 }
 
 #slider_controls li {
@@ -115,16 +146,30 @@ ul {
     margin: 0 10px 0 0;
     list-style: none;
     border: 1px solid #222;
-    padding: 3px;
+    background: #d2d2d2;
 }
 
 #slider_controls li a {
     text-decoration: none;
     color: #333;
+    display: block;
+    padding: 3px 7px;
 }
 
 #slider_controls li a.activeSlide {
-    color: #ff2000;
+    color: #fff;
+    background: green;
+}
+
+#slider_pause {
+    background: green;
+    padding: 6px;
+    border-radius: 5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    text-decoration: none;
+    color: #fff;
+    float: right;
 }
 
 
