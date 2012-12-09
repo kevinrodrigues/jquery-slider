@@ -13,7 +13,9 @@ Requires: jQuery v1.3.2 or later
                 speed: 1200,             // set your speed in m-seconds
                 pause_control: false,    // set to true to stop auto play
                 pause_show : true,       // set to false to hide pause/play button
-                indicator : true         // set to false to hide indicators
+                indicator : true,        // set to false to hide indicators
+                next: null,              // set your next slide button name
+                prev: null               // set your prev slide button name
             };
              
             options = $.extend(defaults, options);
@@ -89,6 +91,7 @@ Requires: jQuery v1.3.2 or later
                         //creates a delay
                         setTimeout(next, options.speed);
                     });
+
                 }
 
 
@@ -99,16 +102,16 @@ Requires: jQuery v1.3.2 or later
                 $('#slider_controls a').click(function(){
 
                     // find target a tag and show / fade out remaining with user set speed / default speed
-                    $($(this).attr('href')).show(options.speed).siblings('li').fadeOut(options.speed).end().end().fadeIn(options.speed, function(){
-                        
-                    });
+                    $($(this).attr('href')).show(options.speed).siblings('li').fadeOut(options.speed);
 
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
 
+
+                    //setTimeout(1000);
+
                     options.pause_control = true;
-
                     // no follow
-
+                    
                     return false;
 
                 });
