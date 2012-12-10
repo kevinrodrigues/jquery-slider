@@ -14,8 +14,9 @@ Requires: jQuery v1.3.2 or later
                 pause_control: false,    // set to true to stop auto play
                 pause_show : true,       // set to false to hide pause/play button
                 indicator : true,        // set to false to hide indicators
-                next: null,              // set your next slide button name
-                prev: null               // set your prev slide button name
+                next_btn: null,          // set your next slide button name
+                prev_btn: null,          // set your prev slide button name
+                animation: null         // default is fade
             };
              
             options = $.extend(defaults, options);
@@ -68,12 +69,18 @@ Requires: jQuery v1.3.2 or later
                                    $(element).next('li') :
                                    $('#slider li:first');
 
+                    var $prev_li = $(element).prev('li').length ?
+                                   $(element).prev('li') :
+                                   $('#slider li:first');
+
 
                     // find slider controls and test to see if there is a next li element to follow
                     // if not then loop back to the first element in the li.
                     var $next_a = $('#slider_controls a.activeSlide').parent('li').next('li').length ?
                                   $('#slider_controls a.activeSlide').parent('li').next('li').find('a') :
                                   $('#slider_controls a:first');
+
+
 
 
                     $('#slider_controls a.activeSlide').removeClass('activeSlide');
@@ -90,6 +97,14 @@ Requires: jQuery v1.3.2 or later
 
                         //creates a delay
                         setTimeout(next, options.speed);
+                    });
+
+                    $(options.next_btn).click(function(){
+                      changeSlide($next_li);
+                    });
+
+                    $(options.prev_btn).click(function(){
+                       changeSlide($prev_li);
                     });
 
                 }
