@@ -3,10 +3,10 @@ Author: Kevin Rosario Rodrigues
 Requires: jQuery v1.3.2 or later
 *==========================================*/
 
-(function($, window, document, undefined){
+(function ($, window, document, undefined) {
     $.fn.extend({
         //plugin name - jquerySlider();
-        jquerySlider: function(options) {
+        jquerySlider: function (options) {
             
             // overwrite defaults in your .js file
             var defaults = {
@@ -21,7 +21,7 @@ Requires: jQuery v1.3.2 or later
              
             options = $.extend(defaults, options);
             
-            return this.each(function() {
+            return this.each(function () {
 
                 
                 // begin plugin code
@@ -58,7 +58,7 @@ Requires: jQuery v1.3.2 or later
                 function changeSlide(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if(options.pause_control) {
+                    if (options.pause_control) {
                         return;
                     }
 
@@ -67,16 +67,16 @@ Requires: jQuery v1.3.2 or later
 
                     var $next_li = $(element).next('li').length ?
                                    $(element).next('li') :
-                                   $('#slider li:first');
+                                   $('#slider li:first'),
 
-                    var $prev_li = $(element).prev('li').length ?
+                        $prev_li = $(element).prev('li').length ?
                                    $(element).prev('li') :
-                                   $('#slider li:first');
+                                   $('#slider li:first'),
 
 
                     // find slider controls and test to see if there is a next li element to follow
                     // if not then loop back to the first element in the li.
-                    var $next_a = $('#slider_controls a.activeSlide').parent('li').next('li').length ?
+                        $next_a = $('#slider_controls a.activeSlide').parent('li').next('li').length ?
                                   $('#slider_controls a.activeSlide').parent('li').next('li').find('a') :
                                   $('#slider_controls a:first');
 
@@ -87,24 +87,24 @@ Requires: jQuery v1.3.2 or later
                     $next_a.addClass('activeSlide');
 
                     // continue rotation after above code excutes
-                    function next(){
+                    function next() {
                         changeSlide($next_li);
                     }
 
                     $(element).fadeOut(options.speed);
 
-                    $($next_li).fadeIn(options.speed, function(){
+                    $($next_li).fadeIn(options.speed, function () {
 
                         //creates a delay
                         setTimeout(next, options.speed);
                     });
 
-                    $(options.next_btn).click(function(){
-                      changeSlide($next_li);
+                    $(options.next_btn).click(function () {
+                        changeSlide($next_li);
                     });
 
-                    $(options.prev_btn).click(function(){
-                       changeSlide($prev_li);
+                    $(options.prev_btn).click(function () {
+                        changeSlide($prev_li);
                     });
 
                 }
@@ -114,7 +114,7 @@ Requires: jQuery v1.3.2 or later
 
                 // add click events/listener to controls
 
-                $('#slider_controls a').click(function(){
+                $('#slider_controls a').click(function () {
 
                     // find target a tag and show / fade out remaining with user set speed / default speed
                     $($(this).attr('href')).show(options.speed).siblings('li').fadeOut(options.speed);
@@ -134,10 +134,10 @@ Requires: jQuery v1.3.2 or later
 
 
                 // pause / play button
-                $('#slider_pause').click(function(){
+                $('#slider_pause').click(function () {
 
                     // checking button status
-                    if($(this).html() === 'Pause') {
+                    if ($(this).html() === 'Pause') {
 
                         options.pause_control = true;
 
@@ -170,7 +170,7 @@ Requires: jQuery v1.3.2 or later
                 // hides all li elements apart from the first one.
                 $('#slider li:first').siblings('li').hide();
 
-                $(window).load(function(){
+                $(window).load(function () {
                     changeSlide($('#slider li:visible:first'));
                 });
 
