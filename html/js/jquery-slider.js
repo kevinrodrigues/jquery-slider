@@ -1,155 +1,213 @@
 /*==========================================
 Author: Kevin Rosario Rodrigues
 Requires: jQuery v1.3.2 or later
+e: kevrodrigues116@gmail.com
 *==========================================*/
 
 (function ($, window, document, undefined) {
     $.fn.extend({
-        //plugin name - jquerySlider();
-        jquerySlider: function (options) {
+        jquerySlider: function (o) {
             
-            // overwrite defaults in your .js file
+            // overwrite defaults below in your .js file
             var defaults = {
-                speed: 1200,             // set your speed in m-seconds
+                speed:  1200,            // set your speed in m-seconds
                 pause_control: false,    // set to true to stop auto play
                 pause_show : true,       // set to false to hide pause/play button
                 indicator : true,        // set to false to hide indicators
+                navControl: true,        // set to false to hide next/prev controls
                 next_btn: null,          // set your next slide button name
                 prev_btn: null,          // set your prev slide button name
-                animation: null         // default is fade
-            };
+                widthImg: '952px',       // set your width for img
+                heightImg: '368px',      // set your height for img
+                animation: 'fade'        // default is fade, you can extend option with jquery ui here e.g bounce etc
+                                         // tested animation: shake, bounce, pulsate
+            },
+
+                // rename markup here if required
+                $slider_pause = $('#slider_pause'),         // pause button
+                $slider = $('#slider'),                     // slider holder
+                $navControl = $('.nav-controls'),            // next/prev buttons
+                $slider_controls = $('#slider_controls');   // slider controls
              
-            options = $.extend(defaults, options);
+            o = $.extend(defaults, o);
             
             return this.each(function () {
 
-                
-                // begin plugin code
-
-                //alert('working')
-
                 // checks to see if element exists
-                if (!$('#slider').length) {
+                if (!$(this).length) {
                     // if not exit
                     return;
                 }
 
+                // setting width/height of slider img
+                if ($(this).length && !null || !undefined) {
+
+                    $(this).find('img').css({position : 'absolute', left : 0, top : 0 });
+                    o.widthImg = $(this).find('img').css('width', o.widthImg);
+                    o.heightImg = $(this).find('img').css('height', o.heightIimg);
+
+                }
 
                 // option to have pause control on set to false in default
                 // settings to overwrite if you want it off.
-                if (options.pause_show === true) {
-                
-                   $('#slider_pause').show();
+                if (o.pause_show === true) {
+                    $slider_pause.show();
                 } else {
-                   $('#slider_pause').hide();
+                    $slider_pause.hide();
                 }
 
                 // option to have indicators off.
-                if (options.indicator === true) {
+                if (o.indicator === true) {
                 
-                   $('#slider_controls').show();
+                    $slider_controls.show();
                 } else {
-                   $('#slider_controls').hide();
-                }
-                   
+                    $slider_controls.hide();
 
+                }
+
+                // o for prev/next btns
+                if (o.navControl === true) {
+
+                    $navControl.show();
+                } else {
+                    $navControl.hide();
+
+                }
 
                 // begin fade
                 function changeSlide(element) {
 
                     //stop the rotation if the user has interacted with controls
-                    if (options.pause_control) {
+                    if (o.pause_control) {
                         return;
                     }
 
                     // if next element is within the li (?) then go to next li in the list
                     // else (:) go to first element.
 
-                    var $next_li = $(element).next('li').length ?
+                    var $nextel = $(element).next('li').length ?
                                    $(element).next('li') :
-                                   $('#slider li:first'),
+                                   $slider.find('li:first'),
 
-                        $prev_li = $(element).prev('li').length ?
+                        $prevel = $(element).prev('li').length ?
                                    $(element).prev('li') :
-                                   $('#slider li:first'),
+                                   $slider.find('li:first'),
 
 
                     // find slider controls and test to see if there is a next li element to follow
                     // if not then loop back to the first element in the li.
-                        $next_a = $('#slider_controls a.activeSlide').parent('li').next('li').length ?
-                                  $('#slider_controls a.activeSlide').parent('li').next('li').find('a') :
-                                  $('#slider_controls a:first');
+                    $next_a = $slider_controls.find('a.activeSlide').parent('li').next('li').length ?
+                                $slider_controls.find('a.activeSlide').parent('li').next('li').find('a') :
+                                $slider_controls.find('a:first');
 
-
-
-
-                    $('#slider_controls a.activeSlide').removeClass('activeSlide');
+                    $slider_controls.find('a.activeSlide').removeClass('activeSlide');
                     $next_a.addClass('activeSlide');
 
                     // continue rotation after above code excutes
                     function next() {
-                        changeSlide($next_li);
+                        changeSlide($nextel);
                     }
 
-                    $(element).fadeOut(options.speed);
 
-                    $($next_li).fadeIn(options.speed, function () {
+                    function fadeTransition() {
+                        $(element).fadeOut(o.speed);
 
-                        //creates a delay
-                        setTimeout(next, options.speed);
+                        $($nextel).fadeIn(o.speed, function () {
+                            //creates a delay
+                            setTimeout(next, o.speed);
+                        });
+                    }
+
+                    if (o.animation === 'fade') {
+
+                        fadeTransition();
+
+                    } else if (o.animation !== 'fade') {
+
+                        $.ajax({
+                            cache: true
+                        });
+
+                        // load external jquery ui if anything other then fade set for animation.
+                        $.getScript("http://code.jquery.com/ui/1.9.2/jquery-ui.js").done(function () {
+                            
+                            var selectedEffect = o.animation;
+
+                            //console.log(selectedEffect);
+                            //alert(selectedEffect);
+
+                            if (selectedEffect.match(/bounce/i)) {
+
+                                $slider.effect('bounce', o.speed);
+                                $(element).fadeOut(o.speed);
+                                $($nextel).fadeIn(o.speed, function () {
+                                    setTimeout(next, o.speed);
+
+                                });
+
+                            } else if (selectedEffect.match(/shake/i)) {
+                                $slider.effect('shake', o.speed);
+                                $(element).fadeOut(o.speed);
+                                $($nextel).fadeIn(o.speed, function () {
+                                    setTimeout(next, o.speed);
+
+                                });
+                            } else if (selectedEffect.match(/pulsate/i)) {
+                                $slider.effect('pulsate', o.speed);
+                                $(element).fadeOut(o.speed);
+                                $($nextel).fadeIn(o.speed, function () {
+                                    setTimeout(next, o.speed);
+
+                                });
+                            } else if (selectedEffect.match(/explode/i)) {
+                                $slider.effect('explode', o.speed);
+                                $(element).fadeOut(o.speed);
+                                $($nextel).fadeIn(o.speed, function () {
+                                    setTimeout(next, o.speed);
+
+                                });
+                            }
+
+                        });
+
+
+                    }
+
+                    // next btn / prev functions
+                    $(o.next_btn).click(function () {
+                        changeSlide($nextel);
                     });
 
-                    $(options.next_btn).click(function () {
-                        changeSlide($next_li);
-                    });
-
-                    $(options.prev_btn).click(function () {
-                        changeSlide($prev_li);
+                    $(o.prev_btn).click(function () {
+                        changeSlide($prevel);
                     });
 
                 }
 
-
-
-
                 // add click events/listener to controls
-
-                $('#slider_controls a').click(function () {
+                $slider_controls.find('a').click(function () {
 
                     // find target a tag and show / fade out remaining with user set speed / default speed
-                    $($(this).attr('href')).show(options.speed).siblings('li').fadeOut(options.speed);
-
+                    $($(this).attr('href')).show(o.speed).siblings('li').fadeOut(o.speed);
                     $(this).addClass('activeSlide').parent('li').siblings('li').find('a').removeClass('activeSlide');
-
-
-                    //setTimeout(1000);
-
-                    options.pause_control = true;
+                    o.pause_control = false;
                     // no follow
-                    
                     return false;
 
                 });
 
-
-
                 // pause / play button
-                $('#slider_pause').click(function () {
+                $($slider_pause).click(function () {
 
                     // checking button status
                     if ($(this).html() === 'Pause') {
-
-                        options.pause_control = true;
-
+                        o.pause_control = true;
                         $(this).html('Play');
-
                     } else {
 
-                        options.pause_control = false;
-
-                    // start rotation
-                        changeSlide('#slider li:visible:first');
-
+                        o.pause_control = false;
+                        // start rotation
+                        changeSlide($($slider).find('li:visible:first'));
                         $(this).html('Pause');
 
                     }
@@ -159,19 +217,21 @@ Requires: jQuery v1.3.2 or later
                 });
 
                 // non auto play setting
-                if (options.pause_control === true) {
-                    $('#slider_pause').html('Play');
+                if (o.pause_control === true) {
+
+                    $slider_pause.html('Play');
                 } else {
-                    $('#slider_pause').html('Pause');
+                    $slider_pause.html('Pause');
+
                 }
 
-
-
                 // hides all li elements apart from the first one.
-                $('#slider li:first').siblings('li').hide();
+                $slider.find('li:first').siblings('li').hide();
 
                 $(window).load(function () {
-                    changeSlide($('#slider li:visible:first'));
+
+                    changeSlide($slider.find('li:visible:first'));
+                    
                 });
 
 

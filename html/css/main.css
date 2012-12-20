@@ -117,25 +117,24 @@ ul {
     padding: 0;
 }
 
-#slider {
-    width: 952px;
+.slider-holder {
     height: 368px;
-    overflow: hidden;
-    clear: both;
+    width: 952px;
     position: relative;
 }
 
-#slider li img {
-    position: absolute;
-    left: 0;
-    top: 0;
+#slider {
     width: 952px;
     height: 368px;
+    list-style: none;
+    clear: both;
+}
+
+#slider li img {
     border-radius: 5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
 }
-
 
 #slider_controls {
     margin: 10px 0;
@@ -147,6 +146,7 @@ ul {
     list-style: none;
     border: 1px solid #222;
     background: #d2d2d2;
+    display: block;
 }
 
 #slider_controls li a {
@@ -172,8 +172,29 @@ ul {
     float: right;
 }
 
+.nav {
+    width: 43px;
+    height: 42px;
+    display: block;
+    position: absolute;
+    float: left;
+    text-indent: -999em;
+    top: 170px;
+}
 
+.nav:hover {
+    opacity: .5;
+}
 
+#next {
+    background: url("../img/next.png") no-repeat 0 0;
+    right: -15px;
+}
+
+#prev {
+    background: url("../img/prev.png") no-repeat 0 0;
+    left: -15px;
+}
 
 /* ==========================================================================
    Helper classes
